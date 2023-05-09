@@ -31,31 +31,36 @@ const TodoList = ({ todo, setTodo }) => {
     setEdit(null)
   }
 
+  const renderTodoItem = (item) => {
+    if (isEditing(item.id)) {
+      return (
+        <div>
+          <input value={value} onChange={(e) => setValue(e.target.value)} />
+          <div>
+            <button onClick={() => saveTodo(item.id)}>Сохранить</button>
+          </div>
+        </div>
+      )
+    } else {
+      return (
+        <div>
+          {item.title}
+          <div>
+            <button onClick={() => deleteTodo(item.id)}>Удалить</button>
+            <button onClick={() => editTodo(item.id, item.title)}>Редактировать</button>
+          </div>
+        </div>
+      )
+    }
+  }
+
   return (
     <div>
-      {
-        todo.map(item => (
-          <div key={item.id}>
-            {
-              isEditing(item.id) ?
-                <div>
-                  <input value={value} onChange={(e) => setValue(e.target.value)} />
-                </div> :
-                <div>{item.title}</div>
-            }
-            {
-              isEditing(item.id) ?
-                <div>
-                  <button onClick={() => saveTodo(item.id)}>Сохранить</button>
-                </div> :
-                <div>
-                  <button onClick={() => deleteTodo(item.id)}>Удалить</button>
-                  <button onClick={() => editTodo(item.id, item.title)}>Редактировать</button>
-                </div>
-            }
-          </div>
-        ))
-      }
+      {todo.map(item => (
+        <div key={item.id}>
+          {renderTodoItem(item)}
+        </div>
+      ))}
     </div>
   )
 }
